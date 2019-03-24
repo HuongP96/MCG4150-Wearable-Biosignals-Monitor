@@ -23,15 +23,17 @@ void setup() {
 
   Wire.begin();
   Serial.begin(115200);   //initialize the serial communication
-
+  Serial.print("Serial on");
   maxim_max30102_reset(); //resets the MAX30102
   delay(1000);
-
+  Serial.print("Maxim reset");
   maxim_max30102_read_reg(REG_INTR_STATUS_1,&uch_dummy);  //Reads/clears the interrupt status register
   maxim_max30102_init();  //initialize the MAX30102
+  Serial.print("Maxim initialized");
   old_n_spo2=0.0;
 
   previousMillis = millis();
+  Serial.print("Timer set");
 }
 
 void loop() {
@@ -45,15 +47,15 @@ void loop() {
     temperature = readTemp();
     readHrSpO2(&HR, &SpO2);
     previousMillis = millis();
-  }
   
-  if(Serial.available()){
-      Serial.print(temperature, 2); //insert what needs to be written in here
-      Serial.print(",");
-      Serial.print(HR, 2); 
-      Serial.print(",");
-      Serial.print(SpO2, 2);
-      Serial.print(";");
+    //if(Serial.available()){
+        Serial.print(temperature, 2); //insert what needs to be written in here
+        Serial.print(",");
+        Serial.print(HR, 2); 
+        Serial.print(",");
+        Serial.print(SpO2, 2);
+        Serial.println(";");
+    //}
   }
 }
 
@@ -63,7 +65,7 @@ float readTemp(){
   float celsius;  // Variable to store Celsius value
 
   rawTemp = analogRead(tempPin);  // Read the raw 0-1023 value of temperature into a variable
-  voltage = rawTemp * (3.3 / 1023.0);
+  voltage = rawTemp * (5 / 1023.0);
   celsius = (voltage - 0.5) * 100;  // Calculate the celsius temperature, based on that voltage
 
   return(celsius);
