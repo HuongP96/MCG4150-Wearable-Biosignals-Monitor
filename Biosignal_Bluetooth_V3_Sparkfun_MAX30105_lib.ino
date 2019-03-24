@@ -12,6 +12,7 @@ uint16_t irBuffer[100]; //infrared LED sensor data
 uint16_t redBuffer[100];  //red LED sensor data
 
 MAX30105 particleSensor;
+
 const int tempPin = A3; 
 int32_t bufferLength; //data length
 int32_t spo2; //SPO2 value
